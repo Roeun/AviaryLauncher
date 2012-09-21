@@ -80,7 +80,6 @@ public class MainActivity extends Activity {
 
 	@Override
 	protected void onCreate( Bundle savedInstanceState ) {
-
 		Log.i( LOG_TAG, "device: " + android.os.Build.DEVICE );
 		Log.i( LOG_TAG, "cpu: " + android.os.Build.CPU_ABI );
 		Log.i( LOG_TAG, "cpu2: " + android.os.Build.CPU_ABI2 );
@@ -586,14 +585,16 @@ public class MainActivity extends Activity {
 
 		final DisplayMetrics metrics = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics( metrics );
-		final int max_size = Math.max( metrics.widthPixels, metrics.heightPixels );
+		int max_size = Math.min( metrics.widthPixels, metrics.heightPixels );
 
 		// you can pass the maximum allowed image size, otherwise feather will determine
 		// the max size based on the device memory
 		// Here we're passing the current display size as max image size because after
 		// the execution of Aviary we're saving the HI-RES image so we don't need a big
 		// image for the preview
-		newIntent.putExtra( "max-image-size", (int) ( (double) max_size / 0.8 ) );
+		max_size = (int) ( (double) max_size / 0.8 );
+		Log.d( LOG_TAG, "max-image-size: " + max_size );
+		newIntent.putExtra( "max-image-size", max_size );
 
 		// Enable/disable the default borders for the effects
 		newIntent.putExtra( "effect-enable-borders", true );
@@ -820,6 +821,8 @@ public class MainActivity extends Activity {
 				if ( result == Error.NoError ) {
 
 					final int total_actions = cursor.getCount();
+					
+					Log.d( LOG_TAG, "total actions: " + total_actions );
 
 					if ( cursor.moveToFirst() ) {
 
@@ -837,7 +840,7 @@ public class MainActivity extends Activity {
 							if ( null != action ) {
 								Log.d( LOG_TAG, "executing: " + action.id + "(" + action.session_id + " on " + action.ctime + ") = "
 										+ action.getActions() );
-
+								
 								// apply a list of actions to the current image
 								moa.applyActions( action.getActions() );
 							} else {
@@ -904,7 +907,7 @@ public class MainActivity extends Activity {
 				// let's update the software tag too
 				newExif.setAttribute( ExifInterfaceWrapper.TAG_SOFTWARE, "Aviary " + FeatherActivity.SDK_VERSION );
 				// ...and the modification date
-				newExif.setAttribute( ExifInterfaceWrapper.TAG_DATETIME, ExifInterfaceWrapper.getExifFormattedDate( new Date() ) );
+				newExif.setAttribute( ExifInterfaceWrapper.TAG_DATETIME, ExifInterfaceWrapper.formatDate( new Date() ) );
 				try {
 					newExif.saveAttributes();
 				} catch ( IOException e ) {
