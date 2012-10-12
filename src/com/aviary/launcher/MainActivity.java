@@ -39,6 +39,7 @@ import android.view.View.OnLongClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
+import com.aviary.android.feather.Constants;
 import com.aviary.android.feather.FeatherActivity;
 import com.aviary.android.feather.R;
 import com.aviary.android.feather.library.media.ExifInterfaceWrapper;
@@ -540,19 +541,19 @@ public class MainActivity extends Activity {
 		newIntent.putExtra( "output", Uri.parse( "file://" + mOutputFilePath ) );
 
 		// format of the destination image (optional)
-		newIntent.putExtra( "output-format", Bitmap.CompressFormat.JPEG.name() );
+		newIntent.putExtra( Constants.EXTRA_OUTPUT_FORMAT, Bitmap.CompressFormat.JPEG.name() );
 
 		// output format quality (optional)
-		newIntent.putExtra( "output-quality", 90 );
+		newIntent.putExtra( Constants.EXTRA_OUTPUT_QUALITY, 90 );
 
 		// If you want to disable the external effects
-		// newIntent.putExtra( "effect-enable-external-pack", false );
+		// newIntent.putExtra( Constants.EXTRA_EFFECTS_ENABLE_EXTERNAL_PACKS, false );
 
 		// If you want to disable the external effects
-		// newIntent.putExtra( "stickers-enable-external-pack", false );
-
+		// newIntent.putExtra( Constants.EXTRA_STICKERS_ENABLE_EXTERNAL_PACKS, false );
+		
 		// enable fast rendering preview
-		// newIntent.putExtra( "effect-enable-fast-preview", true );
+		// newIntent.putExtra( Constants.EXTRA_EFFECTS_ENABLE_FAST_PREVIEW, true );
 
 		// you can force feather to display only a certain ( see FilterLoaderFactory#Filters )
 		// you can omit this if you just wanto to display the default tools
@@ -581,7 +582,10 @@ public class MainActivity extends Activity {
 		// to the final user. But if you want to disable this feature, just pass
 		// any value with the key "tools-vibration-disabled" in the calling intent.
 		// This option has been added to version 2.1.5 of the Aviary SDK
-		// newIntent.putExtra( Constants.EXTRA_TOOLS_DISABLE_VIBRATION, true );
+		newIntent.putExtra( Constants.EXTRA_TOOLS_DISABLE_VIBRATION, true );
+		
+		
+		
 
 		final DisplayMetrics metrics = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics( metrics );
