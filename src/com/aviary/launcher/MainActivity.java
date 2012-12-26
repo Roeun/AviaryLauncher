@@ -41,7 +41,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import com.aviary.android.feather.Constants;
 import com.aviary.android.feather.FeatherActivity;
-import com.aviary.android.feather.R;
 import com.aviary.android.feather.library.media.ExifInterfaceWrapper;
 import com.aviary.android.feather.library.moa.MoaHD;
 import com.aviary.android.feather.library.moa.MoaHD.Error;
@@ -421,6 +420,7 @@ public class MainActivity extends Activity {
 	 * 
 	 * @param uri
 	 */
+	@SuppressWarnings("deprecation")
 	private boolean setImageURI( final Uri uri, final Bitmap bitmap ) {
 
 		Log.d( LOG_TAG, "image size: " + bitmap.getWidth() + "x" + bitmap.getHeight() );
@@ -447,8 +447,9 @@ public class MainActivity extends Activity {
 	 * 
 	 * @return
 	 */
+	@SuppressWarnings("unused")
 	private Uri pickRandomImage() {
-		Cursor c = getContentResolver().query( Images.Media.EXTERNAL_CONTENT_URI, new String[] { ImageColumns.DATA },
+		Cursor c = getContentResolver().query( Images.Media.EXTERNAL_CONTENT_URI, new String[] { ImageColumns._ID, ImageColumns.DATA },
 				ImageColumns.SIZE + ">?", new String[] { "90000" }, null );
 		Uri uri = null;
 
@@ -459,7 +460,14 @@ public class MainActivity extends Activity {
 			if ( total > 0 ) {
 				if ( c.moveToPosition( position ) ) {
 					String data = c.getString( c.getColumnIndex( Images.ImageColumns.DATA ) );
+					long id = c.getLong( c.getColumnIndex( Images.ImageColumns._ID ) );
+					
+					// using the "content:/" style uri
+					// uri = Uri.withAppendedPath( Images.Media.EXTERNAL_CONTENT_URI, String.valueOf( id ) );
+					
+					// using the file scheme uri, passing the real path
 					uri = Uri.parse( data );
+					
 					Log.d( LOG_TAG, uri.toString() );
 				}
 			}
@@ -506,6 +514,7 @@ public class MainActivity extends Activity {
 	 * 
 	 * @param uri
 	 */
+	@SuppressWarnings("deprecation")
 	private void startFeather( Uri uri ) {
 
 		Log.d( LOG_TAG, "uri: " + uri );
@@ -549,8 +558,8 @@ public class MainActivity extends Activity {
 		// If you want to disable the external effects
 		// newIntent.putExtra( Constants.EXTRA_EFFECTS_ENABLE_EXTERNAL_PACKS, false );
 
-		// If you want to disable the external effects
-		// newIntent.putExtra( Constants.EXTRA_STICKERS_ENABLE_EXTERNAL_PACKS, false );
+		// If you want to disable the external stickers
+		newIntent.putExtra( Constants.EXTRA_STICKERS_ENABLE_EXTERNAL_PACKS, false );
 		
 		// enable fast rendering preview
 		// newIntent.putExtra( Constants.EXTRA_EFFECTS_ENABLE_FAST_PREVIEW, true );

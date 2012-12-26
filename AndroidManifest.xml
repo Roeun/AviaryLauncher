@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.aviary.launcher"
-    android:versionCode="66"
-    android:versionName="2.1.6" >
+    android:versionCode="67"
+    android:versionName="2.2.0" >
 
     <uses-sdk
         android:minSdkVersion="8"
-        android:targetSdkVersion="16" />
+        android:targetSdkVersion="17" />
 
     <!-- REQUIRED PERMISSIONS -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -76,7 +76,7 @@
             android:launchMode="singleTop"
             android:theme="@style/FeatherDefaultTheme.Dialog" />        
 
-        <!-- receiver. gets the newly installed plugins -->
+        <!-- Aviary Receiver must be defined here. gets the newly installed plugins -->
         <receiver
             android:name="com.aviary.android.feather.receivers.FeatherSystemReceiver"
             android:exported="true"
@@ -90,7 +90,8 @@
         </receiver>
         
         <!-- Required for the hi-res image processing -->
-        <!-- authorities can have the value you prefer -->
+        <!-- The "android:authorities" attribute must be unique, so please use your app's package path in this way: -->
+        <!-- 	android:authorities="{your.package.name}.HiResProvider" -->
         <provider 
             android:name="com.aviary.android.feather.library.providers.FeatherContentProvider"
             android:exported="false"
