@@ -29,10 +29,13 @@
 -keep class com.aviary.android.feather.library.moa.MoaResult
 -keep class com.aviary.android.feather.library.moa.MoaHD
 -keep class com.aviary.android.feather.library.filters.NativeFilterProxy
+-keep class com.aviary.android.feather.library.services.PluginService
 -keep class com.aviary.android.feather.library.utils.CameraUtils
 -keep class com.aviary.android.feather.opengl.AviaryGLSurfaceView
 -keep class com.aviary.android.feather.library.opengl.GLUtils
 -keep class com.aviary.android.feather.library.media.ExifInterfaceWrapper
+-keep class com.aviary.android.feather.widget.IFlingRunnable
+-keep interface com.aviary.android.feather.library.services.EffectContext
 
 -keep class * extends com.aviary.android.feather.library.services.EffectContextService
 -keep class * extends com.aviary.android.feather.widget.IFlingRunnable
