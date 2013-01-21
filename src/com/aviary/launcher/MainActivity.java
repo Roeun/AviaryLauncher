@@ -53,6 +53,16 @@ import com.aviary.android.feather.library.utils.StringUtils;
 import com.aviary.android.feather.library.utils.SystemUtils;
 
 public class MainActivity extends Activity {
+	
+	/**
+	 * ========== READ ME FIRST ===========
+	 * In order to use the Aviary SDK correctly you must first
+	 * get your own API-KEY from http://aviary.com/android.
+	 * Then copy the generated API-KEY into a file called "aviary-credentials.txt"
+	 * inside your assets folder.
+	 * Without that file your Activity would be unable to launch FeatherActivity.
+	 */
+	
 
 	private static final int ACTION_REQUEST_GALLERY = 99;
 	private static final int ACTION_REQUEST_FEATHER = 100;
@@ -538,34 +548,51 @@ public class MainActivity extends Activity {
 		// Create the intent needed to start feather
 		Intent newIntent = new Intent( this, FeatherActivity.class );
 
-		// set the source image uri
+		// === INPUT IMAGE URI ===
+		// Mandatory
+		// Set the source image uri
 		newIntent.setData( uri );
 
-		// pass the required api_key and secret ( see
-		// http://developers.aviary.com/ )
-		newIntent.putExtra( "API_KEY", API_KEY );
-
-		// pass the uri of the destination image file (optional)
+		// === OUTPUT ====
+		// Optional 
+		// Pass the uri of the destination image file.
 		// This will be the same uri you will receive in the onActivityResult
-		newIntent.putExtra( "output", Uri.parse( "file://" + mOutputFilePath ) );
+		newIntent.putExtra( Constants.EXTRA_OUTPUT, Uri.parse( "file://" + mOutputFilePath ) );
 
-		// format of the destination image (optional)
+		// === OUTPUT FORMAT ===
+		// Optional
+		// Format of the destination image
 		newIntent.putExtra( Constants.EXTRA_OUTPUT_FORMAT, Bitmap.CompressFormat.JPEG.name() );
 
-		// output format quality (optional)
+		// === OUTPUT QUALITY ===
+		// Optional
+		// Output format quality (jpeg only)
 		newIntent.putExtra( Constants.EXTRA_OUTPUT_QUALITY, 90 );
 
+		// === ENABLE/DISABLE IAP FOR EFFECTS ===
+		// Optional
 		// If you want to disable the external effects
 		// newIntent.putExtra( Constants.EXTRA_EFFECTS_ENABLE_EXTERNAL_PACKS, false );
+		
+		// === ENABLE/DISABLE IAP FOR FRAMES===
+		// Optional
+		// If you want to disable the external borders.
+		// Note that this will remove the frames tool.
+		// newIntent.putExtra( Constants.EXTRA_FRAMES_ENABLE_EXTERNAL_PACKS, false );		
 
-		// If you want to disable the external stickers
-		newIntent.putExtra( Constants.EXTRA_STICKERS_ENABLE_EXTERNAL_PACKS, false );
+		// == ENABLE/DISABLE IAP FOR STICKERS ===
+		// Optional
+		// If you want to disable the external stickers. In this case you must have a folder called "stickers" in your assets folder
+		// containing a list of .png files, which will be your default stickers
+		// newIntent.putExtra( Constants.EXTRA_STICKERS_ENABLE_EXTERNAL_PACKS, false );
 		
 		// enable fast rendering preview
 		// newIntent.putExtra( Constants.EXTRA_EFFECTS_ENABLE_FAST_PREVIEW, true );
 
-		// you can force feather to display only a certain ( see FilterLoaderFactory#Filters )
-		// you can omit this if you just wanto to display the default tools
+		// == TOOLS LIST ===
+		// Optional
+		// You can force feather to display only some tools ( see FilterLoaderFactory#Filters )
+		// you can omit this if you just want to display the default tools
 
 		/*
 		 * newIntent.putExtra( "tools-list", new String[] { FilterLoaderFactory.Filters.ENHANCE.name(),
@@ -579,46 +606,48 @@ public class MainActivity extends Activity {
 		 * FilterLoaderFactory.Filters.COLORTEMP.name(), } );
 		 */
 
-		// you want the result bitmap inline. (optional)
+		// === INLINE BITMAP RESULT ===
+		// Optional.
+		// You want the result bitmap inline. 
+		// This will work only with small bitmaps
 		// newIntent.putExtra( Constants.EXTRA_RETURN_DATA, true );
 
-		// you want to hide the exit alert dialog shown when back is pressed
+		// === EXIT ALERT ===
+		// Optional
+		// Uou want to hide the exit alert dialog shown when back is pressed
 		// without saving image first
 		// newIntent.putExtra( Constants.EXTRA_HIDE_EXIT_UNSAVE_CONFIRMATION, true );
 
-		// -- VIBRATION --
+		// === VIBRATION ===
+		// Optional
 		// Some aviary tools use the device vibration in order to give a better experience
 		// to the final user. But if you want to disable this feature, just pass
 		// any value with the key "tools-vibration-disabled" in the calling intent.
 		// This option has been added to version 2.1.5 of the Aviary SDK
 		newIntent.putExtra( Constants.EXTRA_TOOLS_DISABLE_VIBRATION, true );
-		
-		
-		
 
-		final DisplayMetrics metrics = new DisplayMetrics();
-		getWindowManager().getDefaultDisplay().getMetrics( metrics );
-		int max_size = Math.min( metrics.widthPixels, metrics.heightPixels );
-
+		// === MAX SIZE ===
+		// Optional
 		// you can pass the maximum allowed image size, otherwise feather will determine
-		// the max size based on the device memory
+		// the max size based on the device memory.
+		// This will not affect the hi-res image size.
 		// Here we're passing the current display size as max image size because after
 		// the execution of Aviary we're saving the HI-RES image so we don't need a big
 		// image for the preview
+		final DisplayMetrics metrics = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics( metrics );
+		int max_size = Math.min( metrics.widthPixels, metrics.heightPixels );		
 		max_size = (int) ( (double) max_size / 0.8 );
 		Log.d( LOG_TAG, "max-image-size: " + max_size );
-		newIntent.putExtra( "max-image-size", max_size );
+		newIntent.putExtra( Constants.EXTRA_MAX_IMAGE_SIZE, max_size );
 
-		// Enable/disable the default borders for the effects
-		newIntent.putExtra( "effect-enable-borders", true );
-
+		// === HI-RES ===
 		// You need to generate a new session id key to pass to Aviary feather
 		// this is the key used to operate with the hi-res image ( and must be unique for every new instance of Feather )
 		// The session-id key must be 64 char length
-
 		mSessionId = StringUtils.getSha256( System.currentTimeMillis() + API_KEY );
 		Log.d( LOG_TAG, "session: " + mSessionId + ", size: " + mSessionId.length() );
-		newIntent.putExtra( "output-hires-session-id", mSessionId );
+		newIntent.putExtra( Constants.EXTRA_OUTPUT_HIRES_SESSION_ID, mSessionId );
 
 		// ..and start feather
 		startActivityForResult( newIntent, ACTION_REQUEST_FEATHER );
