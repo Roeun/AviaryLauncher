@@ -6,7 +6,7 @@
     <string name="crash_notif_ticker_text">Unexpected error, please send a report...</string>
     <string name="crash_notif_title">Feather crashed...</string>
     <string name="crash_notif_text">Please click here to help fix the issue.</string>
-    <string name="app_name">Aviary</string>
+    <string name="app_name">Aviary Demo</string>
     <string name="launch_editor">Launch Editor</string>
     <string name="choose_photo">Choose a Photo</string>
     <string name="external_storage_na_title">Attention</string>

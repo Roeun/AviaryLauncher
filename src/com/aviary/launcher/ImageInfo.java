@@ -14,10 +14,10 @@ import android.location.Address;
 import android.net.Uri;
 import android.provider.MediaStore.Images;
 import android.provider.MediaStore.Images.ImageColumns;
-import com.aviary.android.feather.library.media.ExifInterfaceWrapper;
-import com.aviary.android.feather.library.utils.CameraUtils;
-import com.aviary.android.feather.library.utils.IOUtils;
-import com.aviary.android.feather.library.utils.StringUtils;
+import com.aviary.android.feather.headless.media.ExifInterfaceWrapper;
+import com.aviary.android.feather.headless.utils.CameraUtils;
+import com.aviary.android.feather.headless.utils.IOUtils;
+import com.aviary.android.feather.headless.utils.StringUtils;
 
 
 public class ImageInfo implements Serializable {

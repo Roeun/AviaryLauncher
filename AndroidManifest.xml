@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.aviary.launcher"
-    android:versionCode="68"
-    android:versionName="2.2.1" >
+    android:versionCode="69"
+    android:versionName="2.4.0" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -15,9 +15,6 @@
     <!-- OPTIONAL PERMISSION, used to enhance the wheel experience -->
     <uses-permission android:name="android.permission.VIBRATE" />
     
-    <!-- Required to send logcat using ACRA -->
-    <uses-permission android:name="android.permission.READ_LOGS"></uses-permission>
-
     <application
         android:hardwareAccelerated="true"
         android:icon="@drawable/icon"
