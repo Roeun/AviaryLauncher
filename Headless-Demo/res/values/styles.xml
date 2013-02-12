@@ -1,0 +1,10 @@
+<resources>
+    <style name="AppBaseTheme" parent="@android:style/Theme.Light.NoTitleBar">
+    </style>
+
+    <style name="AppTheme" parent="AppBaseTheme">
+        <item name="vpiIconPageIndicatorStyle">@style/Widget.IconPageIndicator</item>
+        <item name="vpiTabPageIndicatorStyle">@style/Widget.TabPageIndicator</item>        
+    </style>
+
+</resources>
